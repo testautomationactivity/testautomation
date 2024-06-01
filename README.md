@@ -87,7 +87,4 @@ The following test scenarios are covered:
 
 Contributions are welcome! Please create a pull request with a detailed description of your changes.
 
-## License
-
-This project is licensed under the MIT License.
 
