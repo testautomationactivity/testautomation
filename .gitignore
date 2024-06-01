@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.idea/
+logs/
+Lib/
+venv/
+env
+report.html
+pyvenv.cfg
+include/
