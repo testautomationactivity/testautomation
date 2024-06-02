@@ -2,3 +2,4 @@ selenium
 pytest
 pytest-html
 black
+webdriver_manager

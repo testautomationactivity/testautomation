@@ -1,6 +1,7 @@
 import pytest
 from selenium import webdriver
 from base.logger import configure_logging
+from webdriver_manager.chrome import ChromeDriverManager
 
 logger = configure_logging()
 
@@ -13,7 +14,8 @@ def setup(request):
     chrome_options.add_argument("--use_subprocess")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    driver = webdriver.Chrome(options=chrome_options)
+    chrome_service = webdriver.ChromeService(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     driver.get("https://github.com/login")
 
     driver.maximize_window()
