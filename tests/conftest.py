@@ -1,8 +1,11 @@
 import pytest
 from selenium import webdriver
+from base.logger import configure_logging
+
+logger = configure_logging()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def setup(request):
     # Initialize the WebDriver (Chrome) instance
     chrome_options = webdriver.ChromeOptions()
@@ -19,9 +22,10 @@ def setup(request):
     yield driver
 
     # Quit the driver after tests are done
+    logger.debug("Browser fixture tear down")
     driver.delete_all_cookies()
     driver.quit()
 
 
 def pytest_html_report_title(report):
-    report.title = "Login Automation Test Report"
+    report.title = "Github Login Page Automation Test Report"

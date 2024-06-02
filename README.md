@@ -56,9 +56,11 @@ The following test scenarios are covered:
 1. **Valid login**: Test with correct username and password.
 2. **Invalid login with incorrect username**: Test with an incorrect username and correct password.
 3. **Invalid login with incorrect password**: Test with a correct username and incorrect password.
-4. **Empty username and password fields**: Test with both fields empty.
-5. **Empty username field**: Test with only the password field filled.
-6. **Empty password field**: Test with only the username field filled.
+4. **Empty username field**: Test with only the password field filled.
+5. **Empty password field**: Test with only the username field filled.
+6. **Empty username and password fields**: Test with both fields empty.
+7. **Labels Displayed** Test username, password and footer labels displayed 
+8. **Links Clickable** Test forgot password and create account links clickable 
 7. **Error message display**: Ensure appropriate error messages are displayed for invalid login attempts.
 
 ## Directory Structure
@@ -70,7 +72,8 @@ The following test scenarios are covered:
 - `screenshots/`: Directory for storing screenshots taken during tests.
 - `logs/`: Directory for storing logs.
 - `tests/`: Contains the test cases.
-- `testdata` Contains the test related data
+- `testdata` Contains the test related data if any
+- `base/`: Contains the customised logger object model classes.
 
 ## Logging and Reporting
 

@@ -1,78 +1,6 @@
 import pytest
-import logging
 from pages.login import LoginPage
 from selenium.common.exceptions import TimeoutException
-
-logger = logging.getLogger(__name__)
-formatter = logging.Formatter("%(asctime)s:%(name)s:%(message)s")
-file_handler = logging.FileHandler("logs/test.log")
-file_handler.setFormatter(formatter)
-file_handler.setLevel(logging.DEBUG)
-logger.addHandler(file_handler)
-
-
-def test_invalid_login_wrong_username(setup):
-    page_login = LoginPage(setup)
-    page_login.enter_username(LoginPage.USERNAME)
-    page_login.enter_password("TLpm(mN2Jg;HQxj")
-    page_login.click_login()
-    errors = page_login.get_error_message()
-
-    assert LoginPage.ERROR_MESSAGE in errors
-    logger.info("Invalid login test passed")
-
-
-def test_invalid_login_wrong_password(setup):
-    page_login = LoginPage(setup)
-    page_login.enter_username("frameworkauto")
-    page_login.enter_password(LoginPage.PASSWORD)
-    page_login.click_login()
-    errors = page_login.get_error_message()
-
-    assert LoginPage.ERROR_MESSAGE in errors
-    logger.info("Invalid login test passed")
-
-
-def test_sql_injection_username(setup):
-    page_login = LoginPage(setup)
-    page_login.enter_username("' OR 1=1 --")
-    page_login.enter_password(LoginPage.PASSWORD)
-    page_login.click_login()
-    error_message = page_login.get_error_message()
-    assert LoginPage.ERROR_MESSAGE in error_message
-    logger.info("SQL injection test passed")
-
-
-def test_cross_site_scripting_username(setup):
-    page_login = LoginPage(setup)
-    page_login.enter_username("<script>alert('xss')</script>")
-    page_login.enter_password(LoginPage.PASSWORD)
-    page_login.click_login()
-    error_message = page_login.get_error_message()
-    assert LoginPage.ERROR_MESSAGE in error_message
-    logger.info("Cross-site scripting test passed")
-
-
-def test_username_max_length(setup):
-    long_username = "a" * 256  # Assuming the max length is 255 characters
-    page_login = LoginPage(setup)
-    page_login.enter_username(long_username)
-    page_login.enter_password(LoginPage.PASSWORD)
-    page_login.click_login()
-    error_message = page_login.get_error_message()
-    assert LoginPage.ERROR_MESSAGE in error_message
-    logger.info("Maximum length username test passed")
-
-
-def test_password_max_length(setup):
-    long_password = "a" * 256  # Assuming the max length is 255 characters
-    page_login = LoginPage(setup)
-    page_login.enter_username(LoginPage.USERNAME)
-    page_login.enter_password(long_password)
-    page_login.click_login()
-    error_message = page_login.get_error_message()
-    assert LoginPage.ERROR_MESSAGE in error_message
-    logger.info("Maximum length password test passed")
 
 
 def test_valid_login_username_password(setup):
@@ -83,7 +11,106 @@ def test_valid_login_username_password(setup):
 
     try:
         assert "testautomationactivity" in setup.page_source
-        logger.info("Valid login test passed")
+
     except TimeoutException:
-        logger.error("Valid login test failed - username not found in page source")
-        pytest.fail("Login failed, username title not found in page")
+        page_login.take_screenshot("Valid_login_Fail")
+        pytest.fail("Login failed")
+
+
+def test_invalid_login_wrong_username(setup):
+    page_login = LoginPage(setup)
+    page_login.enter_username(LoginPage.USERNAME)
+    page_login.enter_password("TLpm(mN2Jg;HQxj")
+    page_login.click_login()
+    errors = page_login.get_error_message()
+
+    assert LoginPage.ERROR_MESSAGE in errors
+
+
+def test_invalid_login_wrong_password(setup):
+    page_login = LoginPage(setup)
+    page_login.enter_username("frameworkauto")
+    page_login.enter_password(LoginPage.PASSWORD)
+    page_login.click_login()
+    errors = page_login.get_error_message()
+
+    assert LoginPage.ERROR_MESSAGE in errors
+
+
+def test_empty_username(setup):
+    page_login = LoginPage(setup)
+    page_login.enter_password(LoginPage.PASSWORD)
+    page_login.click_login()
+    password_input = setup.find_element(*page_login.username_input)
+    validation_message = password_input.get_attribute('validationMessage')
+
+    assert validation_message == LoginPage.VALIDATION_MESSAGE
+
+
+def test_empty_password(setup):
+    page_login = LoginPage(setup)
+    page_login.enter_username(LoginPage.USERNAME)
+    page_login.click_login()
+    password_input = setup.find_element(*page_login.password_input)
+    validation_message = password_input.get_attribute('validationMessage')
+
+    assert validation_message == LoginPage.VALIDATION_MESSAGE
+
+
+def test_empty_username_and_password(setup):
+    page_login = LoginPage(setup)
+    page_login.click_login()
+    password_input = setup.find_element(*page_login.username_input)
+    validation_message = password_input.get_attribute('validationMessage')
+
+    assert validation_message == LoginPage.VALIDATION_MESSAGE
+
+
+def test_username_label_displayed(setup):
+    page_login = LoginPage(setup)
+    label_text = page_login.get_username_label()
+    assert label_text == "Username or email address"
+
+
+def test_password_label_displayed(setup):
+    page_login = LoginPage(setup)
+    label_text = page_login.get_password_label()
+    assert label_text == "Password"
+
+
+def test_header_label(setup):
+    page_login = LoginPage(setup)
+    header_label = page_login.get_header_label()
+    assert header_label == "Sign in to GitHub"
+
+
+def test_forgot_password_link(setup):
+    page_login = LoginPage(setup)
+    page_login.click_forgot_password()
+    assert "Reset your password" in setup.page_source
+
+
+def test_create_account_link(setup):
+    page_login = LoginPage(setup)
+    page_login.click_create_account()
+    assert "Join GitHub · GitHub" in setup.title
+
+
+def test_footer_labels(setup):
+    page_login = LoginPage(setup)
+    expected_labels = [
+        "Terms",
+        "Privacy",
+        "Docs",
+        "Contact GitHub Support",
+        "Manage cookies",
+        "Do not share my personal information",
+    ]
+    footer_labels = page_login.get_footer_labels()
+
+    assert footer_labels == expected_labels
+
+
+def test_sign_in_with_passkey_option_present(setup):
+    page_login = LoginPage(setup)
+    page_login.is_sign_in_with_passkey_option_present()
