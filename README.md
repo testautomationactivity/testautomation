@@ -44,11 +44,6 @@ This project is a test automation framework for testing the login functionality 
     docker build -t test-automation-framework .
     ```
 
-2. Run the Docker container:
-    ```bash
-    docker run --rm -v $(pwd)/report.html:/app/report.html test-automation-framework
-    ```
-
 ## Test Scenarios
 
 The following test scenarios are covered:
@@ -61,7 +56,9 @@ The following test scenarios are covered:
 6. **Empty username and password fields**: Test with both fields empty.
 7. **Labels Displayed** Test username, password and footer labels displayed 
 8. **Links Clickable** Test forgot password and create account links clickable 
-7. **Error message display**: Ensure appropriate error messages are displayed for invalid login attempts.
+9. **Error message display**: Ensure appropriate error messages are displayed for invalid login attempts.
+10. **Trailing Spaces** Test trailing spaces before and after inputs
+11. **Case sensitivity** Test case-sensitive entries for both username and password
 
 ## Directory Structure
 

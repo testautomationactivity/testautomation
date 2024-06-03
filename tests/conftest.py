@@ -41,8 +41,11 @@ def docker_container():
     yield container
 
     # Stop and remove the container after the tests
-    container.stop()
-    container.remove()
+    try:
+        container.stop()
+        container.remove()
+    except docker.errors.NotFound:
+        print("Docker container already removed")
 
 
 @pytest.fixture(scope="function")

@@ -116,7 +116,7 @@ def test_sign_in_with_passkey_option_present(setup):
     page_login.is_sign_in_with_passkey_option_present()
 
 
-def test_leading_trailing_spaces_username(setup):
+def test_trailing_spaces_username(setup):
     page_login = LoginPage(setup)
     page_login.enter_username(f"  {LoginPage.USERNAME}  ")
     page_login.enter_password(LoginPage.PASSWORD)
@@ -130,7 +130,7 @@ def test_leading_trailing_spaces_username(setup):
         pytest.fail("Login failed")
 
 
-def test_leading_trailing_spaces_password(setup):
+def test_trailing_spaces_password(setup):
     page_login = LoginPage(setup)
     page_login.enter_username(LoginPage.USERNAME)
     page_login.enter_password(f"  {LoginPage.PASSWORD}  ")
