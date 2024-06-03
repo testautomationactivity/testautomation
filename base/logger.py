@@ -2,7 +2,7 @@ import logging
 import os
 
 
-def configure_logging(log_directory='logs', log_filename='test.log'):
+def configure_logging(log_directory="logs", log_filename="test.log"):
     if not os.path.exists(log_directory):
         os.makedirs(log_directory)
 

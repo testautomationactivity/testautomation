@@ -16,16 +16,16 @@ class LoginPage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.username_input = (By.ID, 'login_field')
+        self.username_input = (By.ID, "login_field")
         self.username_label = (By.XPATH, '//label[@for="login_field"]')
         self.password_label = (By.XPATH, '//label[@for="password"]')
-        self.header_label = (By.XPATH , '//*[@id="login"]/div[1]/h1')
-        self.password_input = (By.ID, 'password')
-        self.forgot_password_link = (By.LINK_TEXT, 'Forgot password?')
-        self.create_account_link = (By.LINK_TEXT, 'Create an account')
-        self.sign_in_with_passkey_option = (By.ID, 'sign_in_with_passkey')
-        self.login_button = (By.NAME, 'commit')
-        self.error_message = (By.CLASS_NAME, 'flash-error')
+        self.header_label = (By.XPATH, '//*[@id="login"]/div[1]/h1')
+        self.password_input = (By.ID, "password")
+        self.forgot_password_link = (By.LINK_TEXT, "Forgot password?")
+        self.create_account_link = (By.LINK_TEXT, "Create an account")
+        self.sign_in_with_passkey_option = (By.ID, "sign_in_with_passkey")
+        self.login_button = (By.NAME, "commit")
+        self.error_message = (By.CLASS_NAME, "flash-error")
         self.footer_labels = [
             (By.XPATH, '//ul[contains(@class, "list-style-none")]/li[1]'),
             (By.XPATH, '//ul[contains(@class, "list-style-none")]/li[2]'),
@@ -90,14 +90,19 @@ class LoginPage:
 
     def get_validation_message(self):
         username = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.ID, "username")))
-        assert username.get_attribute("validationMessage") == "Please fill out this field."
+            EC.presence_of_element_located((By.ID, "username"))
+        )
+        assert (
+            username.get_attribute("validationMessage") == "Please fill out this field."
+        )
 
     def get_username_label(self):
         try:
-            label = WebDriverWait(self.driver, 10).until(
-                EC.visibility_of_element_located(self.username_label)
-            ).text
+            label = (
+                WebDriverWait(self.driver, 10)
+                .until(EC.visibility_of_element_located(self.username_label))
+                .text
+            )
             self.logger.info(f"Username label found: {label}")
             return label
         except TimeoutException:
@@ -107,9 +112,11 @@ class LoginPage:
 
     def get_password_label(self):
         try:
-            label = WebDriverWait(self.driver, 10).until(
-                EC.visibility_of_element_located(self.password_label)
-            ).text
+            label = (
+                WebDriverWait(self.driver, 10)
+                .until(EC.visibility_of_element_located(self.password_label))
+                .text
+            )
             self.logger.info(f"Password label found: {label}")
             return label
         except TimeoutException:
@@ -119,9 +126,11 @@ class LoginPage:
 
     def get_header_label(self):
         try:
-            label = WebDriverWait(self.driver, 10).until(
-                EC.visibility_of_element_located(self.header_label)
-            ).text
+            label = (
+                WebDriverWait(self.driver, 10)
+                .until(EC.visibility_of_element_located(self.header_label))
+                .text
+            )
             self.logger.info(f"Header label found: {label}")
             return label
         except TimeoutException:
@@ -154,9 +163,11 @@ class LoginPage:
         try:
             labels = []
             for footer_label in self.footer_labels:
-                label_text = WebDriverWait(self.driver, 10).until(
-                    EC.visibility_of_element_located(footer_label)
-                ).text
+                label_text = (
+                    WebDriverWait(self.driver, 10)
+                    .until(EC.visibility_of_element_located(footer_label))
+                    .text
+                )
                 labels.append(label_text)
             self.logger.info(f"Page footer labels found: {labels}")
             return labels
@@ -177,8 +188,8 @@ class LoginPage:
             return False
 
     def take_screenshot(self, file_name):
-        if not os.path.exists('screenshots'):
-            os.makedirs('screenshots')
+        if not os.path.exists("screenshots"):
+            os.makedirs("screenshots")
         timestamp = time.strftime("%Y%m%d-%H%M%S")
-        self.driver.save_screenshot(f'screenshots/{file_name}-{timestamp}.png')
+        self.driver.save_screenshot(f"screenshots/{file_name}-{timestamp}")
         self.logger.debug(f"Screenshot saved as {file_name}-{timestamp}.png")

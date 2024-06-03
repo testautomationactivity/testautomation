@@ -42,7 +42,7 @@ def test_empty_username(setup):
     page_login.enter_password(LoginPage.PASSWORD)
     page_login.click_login()
     password_input = setup.find_element(*page_login.username_input)
-    validation_message = password_input.get_attribute('validationMessage')
+    validation_message = password_input.get_attribute("validationMessage")
 
     assert validation_message == LoginPage.VALIDATION_MESSAGE
 
@@ -52,7 +52,7 @@ def test_empty_password(setup):
     page_login.enter_username(LoginPage.USERNAME)
     page_login.click_login()
     password_input = setup.find_element(*page_login.password_input)
-    validation_message = password_input.get_attribute('validationMessage')
+    validation_message = password_input.get_attribute("validationMessage")
 
     assert validation_message == LoginPage.VALIDATION_MESSAGE
 
@@ -61,7 +61,7 @@ def test_empty_username_and_password(setup):
     page_login = LoginPage(setup)
     page_login.click_login()
     password_input = setup.find_element(*page_login.username_input)
-    validation_message = password_input.get_attribute('validationMessage')
+    validation_message = password_input.get_attribute("validationMessage")
 
     assert validation_message == LoginPage.VALIDATION_MESSAGE
 
@@ -114,3 +114,53 @@ def test_footer_labels(setup):
 def test_sign_in_with_passkey_option_present(setup):
     page_login = LoginPage(setup)
     page_login.is_sign_in_with_passkey_option_present()
+
+
+def test_leading_trailing_spaces_username(setup):
+    page_login = LoginPage(setup)
+    page_login.enter_username(f"  {LoginPage.USERNAME}  ")
+    page_login.enter_password(LoginPage.PASSWORD)
+    page_login.click_login()
+
+    try:
+        assert "testautomationactivity" in setup.page_source
+
+    except TimeoutException:
+        page_login.take_screenshot("Valid_login_Fail")
+        pytest.fail("Login failed")
+
+
+def test_leading_trailing_spaces_password(setup):
+    page_login = LoginPage(setup)
+    page_login.enter_username(LoginPage.USERNAME)
+    page_login.enter_password(f"  {LoginPage.PASSWORD}  ")
+    page_login.click_login()
+
+    try:
+        assert "testautomationactivity" in setup.page_source
+
+    except TimeoutException:
+        page_login.take_screenshot("Valid_login_Fail")
+        pytest.fail("Login failed")
+
+
+def test_case_sensitivity_username(setup):
+    page_login = LoginPage(setup)
+    page_login.enter_username(LoginPage.USERNAME.upper())
+    page_login.enter_password(LoginPage.PASSWORD)
+    page_login.click_login()
+    try:
+        assert "testautomationactivity" in setup.page_source
+
+    except TimeoutException:
+        page_login.take_screenshot("Valid_login_Fail")
+        pytest.fail("Login failed")
+
+
+def test_case_sensitivity_password(setup):
+    page_login = LoginPage(setup)
+    page_login.enter_username(LoginPage.USERNAME)
+    page_login.enter_password(LoginPage.PASSWORD.upper())
+    page_login.click_login()
+    error_message = page_login.get_error_message()
+    assert LoginPage.ERROR_MESSAGE in error_message
