@@ -2,16 +2,20 @@ import pytest
 import docker
 import os
 import time
+import logging
 from selenium import webdriver
 from base.logger import configure_logging
 from webdriver_manager.chrome import ChromeDriverManager
 from docker.errors import DockerException, APIError
 from tests.errors import DockerSetupException
 
+logger = logging.getLogger(__name__)
+
 
 @pytest.fixture(scope="session")
 def docker_container():
     try:
+        logger.info("Starting Docker container")
         client = docker.from_env()
 
         # Build the Docker image
@@ -42,15 +46,17 @@ def docker_container():
 
     # Stop and remove the container after the tests
     try:
+        logger.info("Stop docker container")
         container.stop()
         container.remove()
     except docker.errors.NotFound:
-        print("Docker container already removed")
+        logger.info("Docker container already removed")
 
 
 @pytest.fixture(scope="function")
 def setup(docker_container):
     # Initialize the WebDriver (Chrome) instance
+    logger.debug("Setup initialization")
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("headless")  # Run in headless mode for Docker
     chrome_options.add_argument("no-sandbox")

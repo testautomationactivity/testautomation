@@ -41,7 +41,7 @@ This project is a test automation framework for testing the login functionality 
 
 1. Build the Docker image:
     ```bash
-    docker build -t test-automation-framework .
+    docker build -t test-automation-activity .
     ```
 
 ## Test Scenarios

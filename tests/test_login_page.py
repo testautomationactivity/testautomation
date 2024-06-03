@@ -126,7 +126,7 @@ def test_trailing_spaces_username(setup):
         assert "testautomationactivity" in setup.page_source
 
     except TimeoutException:
-        page_login.take_screenshot("Valid_login_Fail")
+        page_login.take_screenshot("Valid_login_Fail.png")
         pytest.fail("Login failed")
 
 
@@ -140,7 +140,7 @@ def test_trailing_spaces_password(setup):
         assert "testautomationactivity" in setup.page_source
 
     except TimeoutException:
-        page_login.take_screenshot("Valid_login_Fail")
+        page_login.take_screenshot("Valid_login_Fail.png")
         pytest.fail("Login failed")
 
 
@@ -153,7 +153,7 @@ def test_case_sensitivity_username(setup):
         assert "testautomationactivity" in setup.page_source
 
     except TimeoutException:
-        page_login.take_screenshot("Valid_login_Fail")
+        page_login.take_screenshot("Valid_login_Fail.png")
         pytest.fail("Login failed")
 
 

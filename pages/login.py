@@ -85,7 +85,7 @@ class LoginPage:
             return error_message
         except TimeoutException:
             self.logger.error("Error message not found")
-            self.take_screenshot("failures")
+            self.take_screenshot("error_message_fails.png")
             return ""
 
     def get_validation_message(self):
@@ -107,7 +107,7 @@ class LoginPage:
             return label
         except TimeoutException:
             self.logger.error("Username label not found")
-            self.take_screenshot("username_label_not_found")
+            self.take_screenshot("username_label_not_found.png")
             return ""
 
     def get_password_label(self):
@@ -121,7 +121,7 @@ class LoginPage:
             return label
         except TimeoutException:
             self.logger.error("Password label not found")
-            self.take_screenshot("password_label_not_found")
+            self.take_screenshot("password_label_not_found.png")
             return ""
 
     def get_header_label(self):
@@ -135,7 +135,7 @@ class LoginPage:
             return label
         except TimeoutException:
             self.logger.error("Header label not found")
-            self.take_screenshot("header_label_not_found")
+            self.take_screenshot("header_label_not_found.png")
             return ""
 
     def click_forgot_password(self):
@@ -173,7 +173,7 @@ class LoginPage:
             return labels
         except TimeoutException:
             self.logger.error("Login page Footer labels NOT found")
-            self.take_screenshot("footer_labels_not_found")
+            self.take_screenshot("footer_labels_not_found.png")
             return []
 
     def is_sign_in_with_passkey_option_present(self):
